@@ -20,7 +20,7 @@ Also please take a look at how plugins are [installed and enabled](http://www.ex
 You can use `samples/base-paths.yml` for testing purposes. If so, please create a `definitions` folder
 in the project root and copy the sample YAML there.
 
-_system.config.yml_
+## _system.config.yml_
 
 ```yaml
 # some config in front of the plugins section
@@ -32,7 +32,9 @@ plugins:
 # some config after the plugins section
 ```
 
-_gateway.config.yml_ (A barebone example, if nothing else is used.)
+## _gateway.config.yml_
+
+(A barebone example, if nothing else is used.)
 
 ```yaml
 http:
