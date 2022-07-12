@@ -13,7 +13,7 @@ Modify the file `package.json` deleting the attribute `bundledDependencies`.
 Delete the file `package-lock.json` and execute the NPM install command:
 
 ```shell
-> del package-lock.json
+> rm package-lock.json # I'm not sure if this step is necessary...
 > npm install
 ```
 
