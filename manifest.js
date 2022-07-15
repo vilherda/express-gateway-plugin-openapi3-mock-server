@@ -1,31 +1,31 @@
-const parser = require('./parsers/openapi')
-const register = require('./router/register')
+const { createLoggerWithLabel } = require("express-gateway/lib/logger");
+
+const parser = require("./parsers/openapi");
+const register = require("./router/register");
+const schemes = require("./schemes");
 
 module.exports = {
-    version: '1.2.0',
+    version: "1.2.0",
 
-    policies: ['mock'],
+    policies: ["mock"],
+
+    schema: schemes.plugin,
 
     init: function (pluginContext) {
-        // A mock policy.
+        const logger = createLoggerWithLabel('[EG:mock-policy]');
+        logger.info('init process');
+
+        // A really mock policy ;-)
         pluginContext.registerPolicy({
-            name: 'mock',
-            policy: (actionParams) => {
-                return (req, res, next) => {
-                    next()
-                };
-            }
-        })
+            name: "mock",
+            schema: schemes.policy,
+            policy: (actionParams) => (req, res, next) => null,
+        });
 
-        const definition = parser(pluginContext.settings.definitionFile)
+        logger.info(`loading definition file '${pluginContext.settings.definitionFile}'`);
+        const definition = parser(pluginContext.settings.definitionFile);
 
-        register(definition.paths, definition.components, pluginContext)
-    },
-
-    options: {
-        definitionFile: {
-            type: 'string',
-            required: true
-        }
+        logger.info(`digesting definition file '${pluginContext.settings.definitionFile}'`);
+        register(definition.paths, definition.components, pluginContext, logger);
     }
-}
+};

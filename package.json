@@ -27,6 +27,8 @@
     "deasync": "^0.1.10",
     "express-validator": "^4.3.0",
     "json-schema-ref-parser": "^4.0.0"
+  },
+  "devDependencies": {
+    "express-gateway": "^1.16.11"
   }
 }
-
