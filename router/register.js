@@ -13,26 +13,27 @@ const { validationResult } = require("express-validator/check");
  * @param logger      The logger to add debug traces
  */
 function registerMethod(method, requestPath, validate, example, context, logger) {
+    const exampleStr = JSON.stringify(example);
     if (validate === null) {
-        logger.debug(`registering route for method '${method}', path '${requestPath}' without validations and an example: ${JSON.stringify(example)}`);
+        logger.debug(`registering route for method '${method}', path '${requestPath}' without validations and an example: ${exampleStr}`);
 
         context.registerGatewayRoute((app) =>
             app[method](requestPath, (req, res, next) => {
-                logger.debug(`sending response for method '${method}' with example: '${JSON.stringify(example)}'`);
-                res.json(example);
+                logger.debug(`sending response for method '${method}' with example: '${exampleStr}'`);
+                res.status(200).json(example);
                 next();
             })
         );
     } else {
-        logger.debug(`registering route for method '${method}', path '${requestPath}' with validations (${validate}) and an example: ${JSON.stringify(example)}`);
+        logger.debug(`registering route for method '${method}', path '${requestPath}' with validations (${validate}) and an example: ${exampleStr}`);
 
         context.registerGatewayRoute((app) => {
             app[method](requestPath, validate, (req, res, next) => {
                 const errors = validationResult(req);
 
                 if (errors.isEmpty()) {
-                    logger.debug(`sending response for validated method '${method}' with example: '${JSON.stringify(example)}'`);
-                    res.json(example);
+                    logger.debug(`sending response for validated method '${method}' with example: '${exampleStr}'`);
+                    res.status(200).json(example);
                 } else {
                     logger.debug(`sending response for validated method '${method}' with error: '${JSON.stringify(errors)}'`);
                     res.status(422).json({ errors: errors.mapped() });
